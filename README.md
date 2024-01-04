@@ -32,6 +32,8 @@ Realiza um Select que pega as informações do inventory (longitude e latitude) 
 `
 Necessário adicionar longitude e latitude do host no inventory Zabbix
 `
+
+
 Select postgresql
 ```
 SELECT h.host, hi.location_lat AS latitude, hi.location_lon AS longitude, hy.value
