@@ -32,6 +32,18 @@ Realiza um Select que pega as informações do inventory (longitude e latitude) 
 `
 Necessário adicionar longitude e latitude do host no inventory Zabbix
 `
+Select postgresql
+```
+SELECT h.host, hi.location_lat AS latitude, hi.location_lon AS longitude, hy.value
+FROM hosts h
+INNER JOIN host_inventory hi ON h.hostid = hi.hostid AND hi.location_lat != '' AND hi.location_lon != ''
+INNER JOIN items i ON h.hostid = i.hostid AND (i.key_ = 'icmpping' OR i.key_ LIKE 'icmpping[%')
+LEFT JOIN history_uint hy ON i.itemid = hy.itemid AND hy.clock = (
+    SELECT MAX(clock)
+    FROM history_uint
+    WHERE itemid = i.itemid)
+WHERE h.status = 0 AND i.status = 0;
+```
 
 Abaixo imagens das configurações do dashboard:
 
